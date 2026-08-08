@@ -1,0 +1,54 @@
+//====================================================
+// 4-bit Ripple Carry Adder
+//====================================================
+// Inputs  : A[3:0], B[3:0], Cin
+// Outputs : Sum[3:0], Cout
+//====================================================
+
+module ripple_carry_adder_4bit (
+    input [3:0] A,
+    input [3:0] B,
+    input Cin,
+    output [3:0] Sum,
+    output Cout
+);
+
+wire C1, C2, C3;
+
+// Full Adder 0 - Least Significant Bit
+full_adder FA0 (
+    .A(A[0]),
+    .B(B[0]),
+    .Cin(Cin),
+    .Sum(Sum[0]),
+    .Cout(C1)
+);
+
+// Full Adder 1
+full_adder FA1 (
+    .A(A[1]),
+    .B(B[1]),
+    .Cin(C1),
+    .Sum(Sum[1]),
+    .Cout(C2)
+);
+
+// Full Adder 2
+full_adder FA2 (
+    .A(A[2]),
+    .B(B[2]),
+    .Cin(C2),
+    .Sum(Sum[2]),
+    .Cout(C3)
+);
+
+// Full Adder 3 - Most Significant Bit
+full_adder FA3 (
+    .A(A[3]),
+    .B(B[3]),
+    .Cin(C3),
+    .Sum(Sum[3]),
+    .Cout(Cout)
+);
+
+endmodule

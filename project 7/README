@@ -1,0 +1,260 @@
+# 4-bit Ripple Carry Adder using Verilog HDL
+
+## 📌 Project Title
+
+**Design and Simulation of a 4-bit Ripple Carry Adder using Verilog HDL**
+
+## 📖 Introduction
+
+A **Ripple Carry Adder (RCA)** is a digital combinational circuit used to add two binary numbers.
+
+A 4-bit Ripple Carry Adder adds two 4-bit binary numbers along with an optional input carry.
+
+It consists of **four Full Adders connected in series**.
+
+The carry output from each Full Adder is connected to the carry input of the next Full Adder. Because the carry propagates from the least significant bit to the most significant bit, it is called a **Ripple Carry Adder**.
+
+## 🔹 Inputs and Outputs
+
+### Inputs
+
+* `A[3:0]` – First 4-bit binary number
+* `B[3:0]` – Second 4-bit binary number
+* `Cin` – Initial carry input
+
+### Outputs
+
+* `Sum[3:0]` – 4-bit sum
+* `Cout` – Final carry output
+
+## 🔹 Block Diagram
+
+```text
+        A0 ─────┐
+        B0 ─────┤
+       Cin ─────►│ FA0 │──── Sum0
+                 └──┬──┘
+                    │ C1
+                    ▼
+        A1 ─────┐
+        B1 ─────┤
+                 │ FA1 │──── Sum1
+                 └──┬──┘
+                    │ C2
+                    ▼
+        A2 ─────┐
+        B2 ─────┤
+                 │ FA2 │──── Sum2
+                 └──┬──┘
+                    │ C3
+                    ▼
+        A3 ─────┐
+        B3 ─────┤
+                 │ FA3 │──── Sum3
+                 └──┬──┘
+                    │
+                   Cout
+```
+
+## 🔹 Full Adder
+
+Each stage of the Ripple Carry Adder uses a Full Adder.
+
+A Full Adder has:
+
+* 3 inputs: `A`, `B`, `Cin`
+* 2 outputs: `Sum`, `Cout`
+
+### Full Adder Equations
+
+```text
+Sum  = A ⊕ B ⊕ Cin
+
+Cout = AB + BCin + ACin
+```
+
+## 🔹 Working Principle
+
+The addition starts from the **Least Significant Bit (LSB)**.
+
+1. The first Full Adder adds `A[0]`, `B[0]`, and `Cin`.
+2. It produces `Sum[0]` and carry `C1`.
+3. `C1` becomes the carry input of the second Full Adder.
+4. The process continues through all four Full Adders.
+5. The final Full Adder produces `Sum[3]` and `Cout`.
+
+The carry therefore **ripples** from one stage to the next.
+
+## 🔹 Verilog Design
+
+The 4-bit Ripple Carry Adder is constructed using four Full Adder modules.
+
+```verilog
+full_adder FA0 (
+    .A(A[0]),
+    .B(B[0]),
+    .Cin(Cin),
+    .Sum(Sum[0]),
+    .Cout(C1)
+);
+
+full_adder FA1 (
+    .A(A[1]),
+    .B(B[1]),
+    .Cin(C1),
+    .Sum(Sum[1]),
+    .Cout(C2)
+);
+
+full_adder FA2 (
+    .A(A[2]),
+    .B(B[2]),
+    .Cin(C2),
+    .Sum(Sum[2]),
+    .Cout(C3)
+);
+
+full_adder FA3 (
+    .A(A[3]),
+    .B(B[3]),
+    .Cin(C3),
+    .Sum(Sum[3]),
+    .Cout(Cout)
+);
+```
+
+## 🧪 Testbench
+
+The testbench file is:
+
+```text
+ripple_carry_adder_4bit_tb.v
+```
+
+It tests different combinations of:
+
+* 4-bit input `A`
+* 4-bit input `B`
+* Carry input `Cin`
+
+The testbench displays the final carry and sum.
+
+## 📊 Expected Simulation Output
+
+```text
+==============================================
+       4-BIT RIPPLE CARRY ADDER TEST
+==============================================
+ A     B    Cin | Cout  Sum
+----------------------------
+0000  0000    0  |  0    0000
+0011  0101    0  |  0    1000
+0111  0001    0  |  0    1000
+1010  0101    0  |  0    1111
+1111  0001    0  |  1    0000
+1111  1111    0  |  1    1110
+1010  0011    1  |  0    1110
+1111  1111    1  |  1    1111
+----------------------------
+Simulation completed successfully.
+```
+
+## 🛠️ Tools Used
+
+* Verilog HDL
+* Icarus Verilog
+* GTKWave
+* GitHub
+
+## ▶️ How to Run the Simulation
+
+### Step 1: Compile
+
+Use the following command:
+
+```bash
+iverilog -o rca_sim full_adder.v ripple_carry_adder_4bit.v ripple_carry_adder_4bit_tb.v
+```
+
+### Step 2: Run
+
+```bash
+vvp rca_sim
+```
+
+The simulation results will be displayed in the terminal.
+
+## 📁 Project Structure
+
+```text
+4-bit-Ripple-Carry-Adder/
+│
+├── README.md
+├── full_adder.v
+├── ripple_carry_adder_4bit.v
+├── ripple_carry_adder_4bit_tb.v
+└── simulation_output.txt
+```
+
+## 🎯 Objectives
+
+1. Understand binary addition.
+2. Understand the working of a Full Adder.
+3. Design a 4-bit Ripple Carry Adder.
+4. Connect multiple Full Adders to form an RCA.
+5. Write a Verilog testbench.
+6. Verify the design through simulation.
+7. Learn how carry propagates between adder stages.
+8. Upload and document the project on GitHub.
+
+## ✅ Result
+
+The **4-bit Ripple Carry Adder** was successfully designed and simulated using Verilog HDL.
+
+The simulation verifies that two 4-bit binary numbers are correctly added along with the input carry. The generated `Sum` and `Cout` match the expected arithmetic results.
+
+## ⭐ Advantages
+
+* Simple design
+* Easy to understand
+* Easy to implement using Full Adders
+* Suitable for learning binary addition
+
+## ⚠️ Disadvantage
+
+The main disadvantage is **carry propagation delay**. Each Full Adder must wait for the carry from the previous stage before producing its final result.
+
+## 📚 Applications
+
+Ripple Carry Adders are used in:
+
+* Arithmetic circuits
+* Digital computers
+* ALUs
+* Microprocessors
+* Digital signal processing systems
+* Binary arithmetic circuits
+
+## 👨‍💻 Author
+
+**Your Name**
+
+## 📜 License
+
+This project is created for educational and academic purposes.
+simulation out put
+==============================================
+       4-BIT RIPPLE CARRY ADDER TEST
+==============================================
+ A     B    Cin | Cout  Sum
+----------------------------
+0000  0000    0  |  0    0000
+0011  0101    0  |  0    1000
+0111  0001    0  |  0    1000
+1010  0101    0  |  0    1111
+1111  0001    0  |  1    0000
+1111  1111    0  |  1    1110
+1010  0011    1  |  0    1110
+1111  1111    1  |  1    1111
+----------------------------
+Simulation completed successfully.
